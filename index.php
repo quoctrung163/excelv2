@@ -67,38 +67,48 @@ function vn_to_str($str)
 
 function compare2Str($strOriginal, $strChild)
 {
+
   // xoa dau va doi thanh chu thuong
   $handlestrOriginal = vn_to_str(strtolower($strOriginal));
   $handlestrChild = vn_to_str(strtolower($strChild));
   // so sanh khong phan biet chu hoa thuong
-  return strpos($handlestrOriginal, $handlestrChild);
+  $result = strpos($handlestrOriginal, $handlestrChild);
+
+  if (gettype($result) === 'integer' && $result >= 0) {
+    return true;
+  }
+  // return strpos($handlestrOriginal, $handlestrChild) !== '';
 }
 
 function searchByParams($name, $birthday, $no, $id, $year, $array)
 {
   $result = $array;
   if ($id != null) {
-    $result = array_filter($array, function ($var) use ($id) {
+    $result = array_filter($result, function ($var) use ($id) {
       return compare2Str($var[0], $id);
     });
   }
   if ($name != null) {
-    $result = array_filter($array, function ($var) use ($name) {
+    $result = array_filter($result, function ($var) use ($name) {
       return compare2Str($var[1], $name);
     });
   }
   if ($no != null) {
-    $result = array_filter($array, function ($var) use ($no) {
+    $result = array_filter($result, function ($var) use ($no) {
       return compare2Str($var[3], $no);
     });
   }
   if ($birthday != null) {
-    $result = array_filter($array, function ($var) use ($birthday) {
-      return compare2Str($var[4], $birthday);
+    $result = array_filter($result, function ($var) use ($birthday) {
+      if (gettype($var[4]) == 'integer') {
+        // $strChildConvertDateTime = PHPExcel_Style_NumberFormat::toFormattedString($var[4], PHPExcel_Style_NumberFormat::FORMAT_DATE_DDMMYYYY);
+        return compare2Str($var[4], $birthday);
+      }
+      // return compare2Str($var[4], $birthday);
     });
   }
   if ($year != null) {
-    $result = array_filter($array, function ($var) use ($year) {
+    $result = array_filter($result, function ($var) use ($year) {
       return compare2Str($var[6], $year);
     });
   }
@@ -106,6 +116,50 @@ function searchByParams($name, $birthday, $no, $id, $year, $array)
 }
 
 // $result = searchForId('Ka És', $data);
-$result = searchByParams('Nguyen', null, null, null, null, $data);
-echo '<pre>';
-var_dump($result);
+// echo strpos('phan quoc trung', 'thang');
+//var_dump($result);
+
+function printTable($array)
+{
+  echo '<table class="table">';
+  echo "<tr>";
+  echo "<th>Mã sv</th><th>Tên sinh viên</th><th>Số vào sổ</th><th>Số hiệu bằng</th><th>Ngày sinh</th><th>Xếp loại</th><th>Năm TN</th>";
+  echo "</tr>";
+  foreach ($array as $item) {
+    echo '<tr>';
+    echo '<td>' . $item[0] . '</td>';
+    echo '<td>' . $item[1] . '</td>';
+    echo '<td>' . $item[2] . '</td>';
+    echo '<td>' . $item[3] . '</td>';
+    echo '<td>' . PHPExcel_Style_NumberFormat::toFormattedString($item[4], PHPExcel_Style_NumberFormat::FORMAT_DATE_DDMMYYYY) . '</td>';
+    echo '<td>' . $item[5] . '</td>';
+    echo '<td>' . $item[6] . '</td>';
+    echo '</tr>';
+  }
+  echo '</table>';
+}
+
+?>
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
+
+</head>
+
+<body>
+  <?php
+  $result = searchByParams($_GET["txtHoTen"], $_GET["txtNgaySinh"], $_GET["txtSoHieuVanBang"], $_GET["txtMaSoSinhVien"], $_GET["txtNamTotNghiep"], $data);
+  echo printTable($result);
+  ?>
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js" integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/" crossorigin="anonymous"></script>
+
+</html>
