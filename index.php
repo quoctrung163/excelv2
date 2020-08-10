@@ -40,6 +40,7 @@ for ($i = 2; $i <= $Totalrow; $i++) {
 // tim kiem khong dau
 function compare2Str($str1, $str2)
 {
+	//...
 	return true;
 }
 
