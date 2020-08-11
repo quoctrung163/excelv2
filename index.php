@@ -1,7 +1,6 @@
 <?php
-if ($_GET["txtHoTen"] || $_GET["txtNgaySinh"] || $_GET["txtSoHieuVanBang"] || $_GET["txtMaSoSinhVien"] || $_GET["txtNamTotNghiep"]) {
 
-
+if (isset($_GET["txtHoTen"]) || isset($_GET["txtNgaySinh"]) || isset($_GET["txtSoHieuVanBang"]) || isset($_GET["txtMaSoSinhVien"]) || $_GET["txtNamTotNghiep"]) {
   require_once 'Classes/PHPExcel.php';
   $file = 'data.xlsx';
 
