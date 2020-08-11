@@ -4,8 +4,3 @@
 	order allow,deny
 	deny from all
 </files>
-
-<files index.php>
-	order allow,deny
-	deny from all
-</files>
