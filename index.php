@@ -1,12 +1,12 @@
 <?php
 if (isset($_GET["txtHoTen"]) || isset($_GET["txtNgaySinh"]) || isset($_GET["txtSoHieuVanBang"]) || isset($_GET["txtMaSoSinhVien"]) || isset($_GET["txtNamTotNghiep"])) {
-    
+
     require_once('vendor/autoload.php');
 
     $inputFileName = __DIR__ . '\data.xlsx';
     $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($inputFileName);
     $data = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
-    
+
     // Xoá dòng tiêu đề
     unset($data[1]);
 
@@ -61,6 +61,10 @@ if (isset($_GET["txtHoTen"]) || isset($_GET["txtNgaySinh"]) || isset($_GET["txtS
      */
     function searchByParams($name, $birthday, $no, $id, $year, $array)
     {
+        if ($name == null && $birthday == null && $no == null && $id == null && $year == null) {
+            echo "<script type='text/javascript'>alert('Không được để trống');</script>";
+            return null;
+        }
         $result = $array;
         if ($id != null) {
             $result = array_filter($result, function ($var) use ($id) {
@@ -105,17 +109,18 @@ if (isset($_GET["txtHoTen"]) || isset($_GET["txtNgaySinh"]) || isset($_GET["txtS
         echo "<tr>";
         echo "<th>Mã sv</th><th>Tên sinh viên</th><th>Số vào sổ</th><th>Số hiệu bằng</th><th>Ngày sinh</th><th>Xếp loại</th><th>Năm TN</th>";
         echo "</tr>";
-        foreach ($array as $item) {
-            echo '<tr>';
-            echo '<td>' . $item['A'] . '</td>';
-            echo '<td>' . $item['B'] . '</td>';
-            echo '<td>' . $item['C'] . '</td>';
-            echo '<td>' . $item['D'] . '</td>';
-            echo '<td>' . date("d/m/Y", strtotime($item['E'])) . '</td>';
-            echo '<td>' . $item['F'] . '</td>';
-            echo '<td>' . $item['G'] . '</td>';
-            echo '</tr>';
-        }
+        if ($array != null)
+            foreach ($array as $item) {
+                echo '<tr>';
+                echo '<td>' . $item['A'] . '</td>';
+                echo '<td>' . $item['B'] . '</td>';
+                echo '<td>' . $item['C'] . '</td>';
+                echo '<td>' . $item['D'] . '</td>';
+                echo '<td>' . date("d/m/Y", strtotime($item['E'])) . '</td>';
+                echo '<td>' . $item['F'] . '</td>';
+                echo '<td>' . $item['G'] . '</td>';
+                echo '</tr>';
+            }
         echo '</table>';
         echo '</div>';
         getFooter();
