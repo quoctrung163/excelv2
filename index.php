@@ -87,7 +87,7 @@ if (isset($_GET["txtHoTen"]) || isset($_GET["txtNgaySinh"]) || isset($_GET["txtS
                     $strChildConvertDateTime = date("d/m/Y", strtotime($var['E']));
                     return compare2Str($strChildConvertDateTime, $birthday);
                 }
-                // return compare2Str($var[4], $birthday);
+                return compare2Str($var['E'], $birthday);
             });
         }
         if ($year != null) {
@@ -116,7 +116,10 @@ if (isset($_GET["txtHoTen"]) || isset($_GET["txtNgaySinh"]) || isset($_GET["txtS
                 echo '<td>' . $item['B'] . '</td>';
                 echo '<td>' . $item['C'] . '</td>';
                 echo '<td>' . $item['D'] . '</td>';
-                echo '<td>' . date("d/m/Y", strtotime($item['E'])) . '</td>';
+                if (gettype($item['E']) == 'double')
+                    echo '<td>' . date("d/m/Y", strtotime($item['E'])) . '</td>';
+                else
+                    echo '<td>' . $item['E'] . '</td>';
                 echo '<td>' . $item['F'] . '</td>';
                 echo '<td>' . $item['G'] . '</td>';
                 echo '</tr>';
