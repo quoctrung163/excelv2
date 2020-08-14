@@ -116,10 +116,7 @@ if (isset($_GET["txtHoTen"]) || isset($_GET["txtNgaySinh"]) || isset($_GET["txtS
                 echo '<td>' . $item['B'] . '</td>';
                 echo '<td>' . $item['C'] . '</td>';
                 echo '<td>' . $item['D'] . '</td>';
-                if (gettype($item['E']) == 'double')
-                    echo '<td>' . date("d/m/Y", strtotime($item['E'])) . '</td>';
-                else
-                    echo '<td>' . $item['E'] . '</td>';
+                echo '<td>' . $item['E'] . '</td>';
                 echo '<td>' . $item['F'] . '</td>';
                 echo '<td>' . $item['G'] . '</td>';
                 echo '</tr>';
